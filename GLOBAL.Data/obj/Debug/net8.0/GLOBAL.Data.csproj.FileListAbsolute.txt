@@ -1,0 +1,17 @@
+/home/caslu/globalC/GLOBAL.Data/bin/Debug/net8.0/GLOBAL.Data.deps.json
+/home/caslu/globalC/GLOBAL.Data/bin/Debug/net8.0/GLOBAL.Data.runtimeconfig.json
+/home/caslu/globalC/GLOBAL.Data/bin/Debug/net8.0/GLOBAL.Data.dll
+/home/caslu/globalC/GLOBAL.Data/bin/Debug/net8.0/GLOBAL.Data.pdb
+/home/caslu/globalC/GLOBAL.Data/bin/Debug/net8.0/GLOBAL.Domain.dll
+/home/caslu/globalC/GLOBAL.Data/bin/Debug/net8.0/GLOBAL.Domain.pdb
+/home/caslu/globalC/GLOBAL.Data/obj/Debug/net8.0/GLOBAL.Data.csproj.AssemblyReference.cache
+/home/caslu/globalC/GLOBAL.Data/obj/Debug/net8.0/GLOBAL.Data.GeneratedMSBuildEditorConfig.editorconfig
+/home/caslu/globalC/GLOBAL.Data/obj/Debug/net8.0/GLOBAL.Data.AssemblyInfoInputs.cache
+/home/caslu/globalC/GLOBAL.Data/obj/Debug/net8.0/GLOBAL.Data.AssemblyInfo.cs
+/home/caslu/globalC/GLOBAL.Data/obj/Debug/net8.0/GLOBAL.Data.csproj.CoreCompileInputs.cache
+/home/caslu/globalC/GLOBAL.Data/obj/Debug/net8.0/GLOBAL.Data.csproj.CopyComplete
+/home/caslu/globalC/GLOBAL.Data/obj/Debug/net8.0/GLOBAL.Data.dll
+/home/caslu/globalC/GLOBAL.Data/obj/Debug/net8.0/refint/GLOBAL.Data.dll
+/home/caslu/globalC/GLOBAL.Data/obj/Debug/net8.0/GLOBAL.Data.pdb
+/home/caslu/globalC/GLOBAL.Data/obj/Debug/net8.0/GLOBAL.Data.genruntimeconfig.cache
+/home/caslu/globalC/GLOBAL.Data/obj/Debug/net8.0/ref/GLOBAL.Data.dll

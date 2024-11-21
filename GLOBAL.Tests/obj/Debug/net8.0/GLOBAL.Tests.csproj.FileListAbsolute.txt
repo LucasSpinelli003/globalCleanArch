@@ -1,0 +1,6 @@
+/home/caslu/globalC/GLOBAL.Tests/bin/Debug/net8.0/CoverletSourceRootsMapping_GLOBAL.Tests
+/home/caslu/globalC/GLOBAL.Tests/obj/Debug/net8.0/GLOBAL.Tests.csproj.AssemblyReference.cache
+/home/caslu/globalC/GLOBAL.Tests/obj/Debug/net8.0/GLOBAL.Tests.GeneratedMSBuildEditorConfig.editorconfig
+/home/caslu/globalC/GLOBAL.Tests/obj/Debug/net8.0/GLOBAL.Tests.AssemblyInfoInputs.cache
+/home/caslu/globalC/GLOBAL.Tests/obj/Debug/net8.0/GLOBAL.Tests.AssemblyInfo.cs
+/home/caslu/globalC/GLOBAL.Tests/obj/Debug/net8.0/GLOBAL.Tests.csproj.CoreCompileInputs.cache
