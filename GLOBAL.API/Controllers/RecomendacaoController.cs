@@ -1,30 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.ML;
 using Microsoft.ML.Data;
-using System.Text.Json;
-using System.IO;
 
 namespace Ecommerce.Cliente.API.Controllers
 {
-    // Classe com a estrutura de treinamento e dados para 
+    //Classe com a estrutura de treinamento e dados para  
     public class DadosRecomendacao
     {
         [LoadColumn(0)] public int Id { get; set; }
-        [LoadColumn(1)] public float EnergyLevel { get; set; } // Variável de previsão (label)
-        [LoadColumn(2)] public string DeviceName { get; set; } // Recurso categórico
+        [LoadColumn(1)] public float EnergyLevel { get; set; }
+        [LoadColumn(2)] public string Device { get; set; }
     }
 
-    // Classe que retorna as previsões de recomendação
+    //Classe que retorna as previsões de recomendação
     public class RecomendacaoProduto
     {
         [ColumnName("Score")]
         public float PontuacaoRecomendacao { get; set; }
-
-        [ColumnName("DeviceName")]
-        public string DeviceName { get; set; } = string.Empty;
-
-        [ColumnName("EnergyLevel")]
-        public float EnergyLevel { get; set; }
+        [ColumnName("Device")]
+        public string Device { get; set; } = string.Empty;
     }
 
     [Route("api/[controller]")]
@@ -46,8 +41,9 @@ namespace Ecommerce.Cliente.API.Controllers
             }
         }
 
-        [HttpGet("recomendar/{energyLevel}/{deviceName}")]
-        public IActionResult Recomendar(float energyLevel, string deviceName)
+        //Metodo para verificar se o produto é ou nao recomendado baseado na entrada de CPF e Produto
+        [HttpGet("recomendar/{id}/{device}")]
+        public IActionResult Recomendar(int id, string device)
         {
             if (!System.IO.File.Exists(caminhoModelo))
             {
@@ -60,26 +56,23 @@ namespace Ecommerce.Cliente.API.Controllers
                 modelo = mlContext.Model.Load(stream, out var modeloSchema);
             }
 
-            var engine = mlContext.Model.CreatePredictionEngine<DadosRecomendacao, RecomendacaoProduto>(modelo);
-            var resultado = engine.Predict(new DadosRecomendacao { EnergyLevel = energyLevel, DeviceName = deviceName });
+            var engineRecomendacao = mlContext.Model.CreatePredictionEngine<DadosRecomendacao, RecomendacaoProduto>(modelo);
 
-            Console.WriteLine(resultado);
-
-            string jsonRecomendacao = JsonSerializer.Serialize(resultado, new JsonSerializerOptions
-            {
-                WriteIndented = true 
+            var recomendacao = engineRecomendacao.Predict(new DadosRecomendacao { 
+                Id = id,
+                Device = device
             });
 
-            Console.WriteLine(jsonRecomendacao);
+            Console.WriteLine(recomendacao.PontuacaoRecomendacao);
 
-            return Ok(new
-            {
-                energyLevel,
-                deviceName,
-                recomendacao = GetStatusRecomendacao(resultado.PontuacaoRecomendacao)
+            return Ok(new { 
+                device = recomendacao.Device,
+                recomendacao = GetStatusRecomendacao(recomendacao.PontuacaoRecomendacao)
             });
         }
 
+
+        //Metodo para treinar o modelo que será utilizado para prever se o produto é ou não recomendado
         private void TreinarModelo()
         {
             var pastaModelo = Path.GetDirectoryName(caminhoModelo);
@@ -92,19 +85,13 @@ namespace Ecommerce.Cliente.API.Controllers
             IDataView dadosTreinamento = mlContext.Data.LoadFromTextFile<DadosRecomendacao>(
                 path: caminhoTreinamento, hasHeader: true, separatorChar: ',');
 
-            var pipeline = mlContext.Transforms.CopyColumns(outputColumnName: "Label", inputColumnName: nameof(DadosRecomendacao.EnergyLevel)) // Label é EnergyLevel
-                .Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "DeviceNameEncoded", inputColumnName: nameof(DadosRecomendacao.DeviceName)))
-                .Append(mlContext.Transforms.Concatenate("Features", "DeviceNameEncoded"))
-                .Append(mlContext.Regression.Trainers.FastTree()); // Usando o modelo de regressão
+            var pipeline = mlContext.Transforms.CopyColumns(outputColumnName: "Label", inputColumnName: nameof(DadosRecomendacao.EnergyLevel))
+                .Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "IdCodificado", inputColumnName: nameof(DadosRecomendacao.Id)))
+                .Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "DeviceCodificado", inputColumnName: nameof(DadosRecomendacao.Device)))
+                .Append(mlContext.Transforms.Concatenate("Features", "IdCodificado", "DeviceCodificado"))
+                .Append(mlContext.Regression.Trainers.FastTree());
 
-            var dadosDivididos = mlContext.Data.TrainTestSplit(dadosTreinamento, testFraction: 0.2);
-            var modelo = pipeline.Fit(dadosDivididos.TrainSet);
-
-            var predicoes = modelo.Transform(dadosDivididos.TestSet);
-            var metrics = mlContext.Regression.Evaluate(predicoes, labelColumnName: "Label", scoreColumnName: "Score");
-
-            Console.WriteLine($"R²: {metrics.RSquared}");
-            Console.WriteLine($"RMSE: {metrics.RootMeanSquaredError}");
+            var modelo = pipeline.Fit(dadosTreinamento);
 
             mlContext.Model.Save(modelo, dadosTreinamento.Schema, caminhoModelo);
             Console.WriteLine($"Modelo treinado e salvo em: {caminhoModelo}");
@@ -124,3 +111,4 @@ namespace Ecommerce.Cliente.API.Controllers
         }
     }
 }
+
