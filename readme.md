@@ -48,6 +48,11 @@ Welcome to **Solutech**, a sustainable energy management platform designed to op
 
 4. **Run the application**:
     ```bash
-    dotnet run
+    dotnet run --project GLOBAL.API/
+    ```
+
+    **Run tests**:
+    ```bash
+    dotnet test
     ```
 ---
