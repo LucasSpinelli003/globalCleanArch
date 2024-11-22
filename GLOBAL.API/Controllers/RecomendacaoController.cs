@@ -63,8 +63,6 @@ namespace Ecommerce.Cliente.API.Controllers
                 Device = device
             });
 
-            Console.WriteLine(recomendacao.PontuacaoRecomendacao);
-
             return Ok(new { 
                 device = recomendacao.Device,
                 recomendacao = GetStatusRecomendacao(recomendacao.PontuacaoRecomendacao)
