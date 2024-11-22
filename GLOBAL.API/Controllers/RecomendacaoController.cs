@@ -5,7 +5,6 @@ using Microsoft.ML.Data;
 
 namespace Ecommerce.Cliente.API.Controllers
 {
-    //Classe com a estrutura de treinamento e dados para  
     public class DadosRecomendacao
     {
         [LoadColumn(0)] public int Id { get; set; }
@@ -13,7 +12,6 @@ namespace Ecommerce.Cliente.API.Controllers
         [LoadColumn(2)] public string Device { get; set; }
     }
 
-    //Classe que retorna as previsões de recomendação
     public class RecomendacaoProduto
     {
         [ColumnName("Score")]
@@ -41,7 +39,6 @@ namespace Ecommerce.Cliente.API.Controllers
             }
         }
 
-        //Metodo para verificar se o produto é ou nao recomendado baseado na entrada de CPF e Produto
         [HttpGet("recomendar/{id}/{device}")]
         public IActionResult Recomendar(int id, string device)
         {
@@ -70,7 +67,6 @@ namespace Ecommerce.Cliente.API.Controllers
         }
 
 
-        //Metodo para treinar o modelo que será utilizado para prever se o produto é ou não recomendado
         private void TreinarModelo()
         {
             var pastaModelo = Path.GetDirectoryName(caminhoModelo);
