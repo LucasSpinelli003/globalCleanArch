@@ -1,0 +1,9 @@
+﻿Id,EnergyLevel,DeviceName
+1,123,DeviceA
+2,1000,DeviceB
+3,150,DeviceA
+4,2000,DeviceC
+5,500,DeviceB
+6,100,DeviceA
+7,3000,DeviceC
+8,750,DeviceB
