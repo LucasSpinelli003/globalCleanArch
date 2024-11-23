@@ -20,6 +20,7 @@ namespace GLOBAL.Application.Services
                 Neighborhood = entity.Neighborhood,
                 Number = entity.Number,
                 Street = entity.Street,
+                ZipCode = entity.ZipCode
             });
 
         }
